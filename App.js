@@ -9,39 +9,28 @@ export default function App() {
 
   const [randomNumber, setRandomNumber] = useState(null);
 
-  const [isWrong, setIsWrong] = useState(false);
-
   console.log(randomNumber);
 
   useEffect(() => {
     setRandomNumber(Math.floor(Math.random() * 100) + 1);
   }, []);
 
-  const handleChange = (e) => {
-    setTypedNumber(e.target.value);
-  };
-
-  const handleWrongNumber = () => {
-    setIsWrong(true);
-    setTimeout(() => {
-      setIsWrong(false);
-    }, 3000);
+  const handleChange = (number) => {
+    setTypedNumber(number);
   };
 
   const handleSubmit = () => {
     setNumberOfGuesses(numberOfGuesses + 1);
     setGuessedNumber(typedNumber);
     setTypedNumber("");
-    if (parseInt(typedNumber) != randomNumber) {
-      handleWrongNumber();
-    }
   };
 
   console.log("Guesses", numberOfGuesses);
+  console.log("Guessed number:", guessedNumber);
 
   if (parseInt(guessedNumber) == randomNumber) {
     return (
-      <View styles={styles.container}>
+      <View style={styles.container}>
         <Text>
           You guessed the right number! It took {numberOfGuesses} guesses. The
           number was {randomNumber}
@@ -55,7 +44,7 @@ export default function App() {
         <TextInput
           style={styles.input}
           type="text"
-          onChange={handleChange}
+          onChangeText={handleChange}
           value={typedNumber}
         />
         <Button
@@ -63,12 +52,12 @@ export default function App() {
           type="button"
           title="Make a Guess"
         ></Button>
-        {guessedNumber < randomNumber && guessedNumber ? (
+        {parseInt(guessedNumber) < randomNumber && (
           <Text borderColor="red">The guess was too low.</Text>
-        ) : null}
-        {guessedNumber > randomNumber && guessedNumber ? (
-          <Text borderColor="red">The guess was too low.</Text>
-        ) : null}
+        )}
+        {parseInt(guessedNumber) > randomNumber && (
+          <Text borderColor="red">The guess was too high.</Text>
+        )}
       </View>
     );
   }
@@ -76,6 +65,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
+    padding: 10,
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
