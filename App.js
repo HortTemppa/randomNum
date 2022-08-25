@@ -11,8 +11,12 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>Guess a number between 1-100</Text>
-      <TextInput />
-      <StatusBar style="auto" />
+      <TextInput
+        onChange={(e) => {
+          setGuessedNumber(e.target.value);
+        }}
+        value={guessedNumber}
+      />
     </View>
   );
 }
@@ -23,5 +27,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  input: {
+    borderColor: "black",
+    borderWidth: 1,
   },
 });
